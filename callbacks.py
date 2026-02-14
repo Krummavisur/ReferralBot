@@ -1,0 +1,6 @@
+MAIN_MENU = "main_menu"
+GET_MIRROR = "get_mirror"
+GET_APP = "get_app"
+GET_LIVE = "get_live"
+GET_PROMO = "get_promo"
+GET_AUTH = "get_auth"
