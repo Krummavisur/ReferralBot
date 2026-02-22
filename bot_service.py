@@ -1,7 +1,13 @@
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, Message
 
-from keyboards import app_keyboard, live_keyboard, main_menu_keyboard, mirror_keyboard
+from keyboards import (
+    admin_panel_keyboard,
+    app_keyboard,
+    live_keyboard,
+    main_menu_keyboard,
+    mirror_keyboard,
+)
 from state import MessageState
 
 MIRROR_URL = "https://xf38lo22j1y0ihymst.com/B2mU"
@@ -83,3 +89,55 @@ class BotService:
 
     async def send_plain(self, chat_id: int, text: str) -> None:
         await self._send_clean(chat_id, text)
+
+    async def send_admin_panel(self, chat_id: int) -> None:
+        text = """⚙️ <b>Админ панель</b>
+
+Выберите действие из меню ниже:"""
+        await self._send_clean(chat_id, text, admin_panel_keyboard())
+
+    async def send_admin_stats(self, chat_id: int) -> None:
+        users = self._message_state.get_users()
+        total_users = len(users)
+        
+        text = f"""📊 <b>Статистика бота</b>
+
+👥 Всего пользователей: <b>{total_users}</b>
+📨 Сообщений отправлено: <b>{len(self._message_state._last_bot_messages)}</b>
+🔗 Активных сессий: <b>{len(self._message_state._anchor_messages)}</b>"""
+        
+        from keyboards import admin_panel_keyboard
+        await self._send_clean(chat_id, text, admin_panel_keyboard())
+
+    async def send_admin_users(self, chat_id: int) -> None:
+        users = self._message_state.get_users()
+        total_users = len(users)
+        
+        if total_users == 0:
+            text = "👥 <b>Пользователи</b>\n\nПользователей пока нет."
+        else:
+            # Показываем первые 10 пользователей
+            users_list = list(users)[:10]
+            users_text = "\n".join([f"• <code>{user_id}</code>" for user_id in users_list])
+            more_text = f"\n\n... и ещё {total_users - 10}" if total_users > 10 else ""
+            
+            text = f"""👥 <b>Пользователи</b>
+
+Всего: <b>{total_users}</b>
+
+Последние пользователи:
+{users_text}{more_text}"""
+        
+        from keyboards import admin_panel_keyboard
+        await self._send_clean(chat_id, text, admin_panel_keyboard())
+
+    async def send_admin_broadcast_prompt(self, chat_id: int) -> None:
+        text = """📢 <b>Рассылка</b>
+
+Отправьте сообщение для рассылки всем пользователям.
+Можно использовать форматирование (HTML).
+
+Для отмены отправьте /admin"""
+        
+        from keyboards import admin_panel_keyboard
+        await self._send_clean(chat_id, text, admin_panel_keyboard())

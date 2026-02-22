@@ -1,0 +1,12 @@
+app = "referralbot"
+primary_region = "fra"
+
+[build]
+  builder = "paketobuildpacks/builder:base"
+
+[processes]
+  worker = "python main.py"
+
+[[vm]]
+  memory = "512mb"
+  cpus = 1

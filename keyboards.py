@@ -1,6 +1,18 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from callbacks import GET_AUTH, GET_APP, GET_LIVE, GET_MIRROR, GET_PROMO, MAIN_MENU
+from callbacks import (
+    ADMIN_BACK,
+    ADMIN_BROADCAST,
+    ADMIN_PANEL,
+    ADMIN_STATS,
+    ADMIN_USERS,
+    GET_AUTH,
+    GET_APP,
+    GET_LIVE,
+    GET_MIRROR,
+    GET_PROMO,
+    MAIN_MENU,
+)
 
 
 def back_to_main() -> InlineKeyboardButton:
@@ -47,5 +59,15 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
             [callback_button("🔴 Лайв", GET_LIVE)],
             [callback_button("🎁 Промокоды", GET_PROMO)],
             [callback_button("🔑 Авторизация", GET_AUTH)],
+        ]
+    )
+
+
+def admin_panel_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [callback_button("📊 Статистика", ADMIN_STATS)],
+            [callback_button("👥 Пользователи", ADMIN_USERS)],
+            [callback_button("📢 Рассылка", ADMIN_BROADCAST)],
         ]
     )
